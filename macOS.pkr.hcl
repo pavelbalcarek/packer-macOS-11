@@ -63,11 +63,6 @@ variable "seeding_program" {
   default = "none"
 }
 
-variable "tools_path" {
-  type    = string
-  default = "/Applications/VMware Fusion.app/Contents/Library/isoimages/darwin.iso"
-}
-
 variable "boot_key_interval_iso" {
   type    = string
   default = "150ms"
@@ -245,18 +240,6 @@ build {
     expect_disconnect = true
     pause_before      = "2m" # needed for the first provisioner to let the OS finish booting
     script            = "scripts/os_settings.sh"
-  }
-
-  provisioner "file" {
-    source      = var.tools_path
-    destination = "~/darwin.iso"
-  }
-
-  provisioner "shell" {
-    expect_disconnect = true
-    scripts = [
-      "scripts/vmw_tools.sh"
-    ]
   }
 }
 
