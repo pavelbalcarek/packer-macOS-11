@@ -114,7 +114,7 @@ variable "vnc_disable_password" {
 }
 
 # source from iso
-source "vmware-iso" "macOS" {
+source "virtualbox-iso" "macOS" {
   headless             = "${var.headless}"
   vnc_bind_address     = "${var.vnc_bind_address}"
   vnc_disable_password = "${var.vnc_disable_password}"
@@ -204,7 +204,7 @@ source "vmware-iso" "macOS" {
 }
 
 # Customize build from existing vm
-source "vmware-vmx" "macOS" {
+source "virtualbox-ovf" "macOS" {
   headless             = "${var.headless}"
   vnc_bind_address     = "${var.vnc_bind_address}"
   vnc_disable_password = "${var.vnc_disable_password}"
@@ -233,7 +233,7 @@ source "vmware-vmx" "macOS" {
 build {
   name = "base"
   sources = [
-    "sources.vmware-iso.macOS"
+    "sources.virtualbox-iso.macOS"
   ]
 
   provisioner "shell" {
@@ -245,7 +245,7 @@ build {
 
 build {
   name    = "customize"
-  sources = ["sources.vmware-vmx.macOS"]
+  sources = ["sources.virtualbox-ovf.macOS"]
 
   provisioner "file" {
     sources     = [var.xcode_cli, "submodules/tccutil/tccutil.py", "files/cliclick"]
