@@ -108,6 +108,11 @@ variable "vrdp_port_max" {
   default = "6000"
 }
 
+variable "vrdp_status" {
+  type    = string
+  default = "off"
+}
+
 # source from iso
 source "virtualbox-iso" "macOS" {
   headless             = "${var.headless}"
@@ -148,6 +153,7 @@ source "virtualbox-iso" "macOS" {
     ["modifyvm", "{{ .Name }}", "--usbxhci", "on"],
     ["modifyvm", "{{ .Name }}", "--keyboard", "usb"],
     ["modifyvm", "{{ .Name }}", "--mouse", "usbtablet"],
+    ["modifyvm", "{{ .Name }}", "--vrde", "${var.vrdp_status}"],
     ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--remove"],
     ["modifyvm", "{{ .Name }}", "--cpuidset", "00000001", "000106e5", "00100800", "0098e3fd", "bfebfbff"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiSystemProduct", "${var.hw_model}"],
