@@ -128,6 +128,8 @@ source "virtualbox-iso" "macOS" {
   http_directory       = "http"
   ssh_timeout          = "12h"
   usb                  = "true"
+  communicator         = "ssh"
+  guest_additions_mode = "disable"
   cpus                 = var.cpu_count
   memory               = var.ram_gb * 1024
   vboxmanage           = [
