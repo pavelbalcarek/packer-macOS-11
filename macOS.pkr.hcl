@@ -126,7 +126,7 @@ source "virtualbox-iso" "macOS" {
   ssh_username         = "${var.user_username}"
   ssh_password         = "${var.user_password}"
   shutdown_command     = "sudo shutdown -h now"
-  guest_os_type        = "MacOS"
+  guest_os_type        = "MacOS_64"
   iso_interface        = "sata"
   disk_size            = "40960"
   hard_drive_interface = "sata"
