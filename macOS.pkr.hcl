@@ -164,7 +164,6 @@ source "virtualbox-iso" "macOS" {
     ["modifyvm", "{{ .Name }}", "--rtcuseutc", "on"],
     ["modifyvm", "{{ .Name }}", "--accelerate3d", "on"],
     ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--remove"],
-    ["storagectl", "{{ .Name }}", "--name", "SATA Controller", "--portcount", "2"],
     ["modifyvm", "{{ .Name }}", "--cpuidset", "00000001", "000106e5", "00100800", "0098e3fd", "bfebfbff"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiSystemProduct", "${var.hw_model}"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiSystemVersion", "1.0"],
