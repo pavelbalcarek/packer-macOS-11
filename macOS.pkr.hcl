@@ -131,46 +131,35 @@ source "virtualbox-iso" "macOS" {
   cpus                 = var.cpu_count
   cores                = var.cpu_count
   memory               = var.ram_gb * 1024
-  vmx_data = {
-    "gui.fitGuestUsingNativeDisplayResolution" = "FALSE"
-    "tools.upgrade.policy"                     = "manual"
-    "smc.present"                              = "TRUE"
-    "smbios.restrictSerialCharset"             = "TRUE"
-    "ulm.disableMitigations"                   = "TRUE"
-    "ich7m.present"                            = "TRUE"
-    "hw.model"                                 = "${var.hw_model}"
-    "hw.model.reflectHost"                     = "FALSE"
-    "smbios.reflectHost"                       = "FALSE"
-    "board-id"                                 = "${var.board_id}"
-    "serialNumber"                             = "${var.serial_number}"
-    "serialNumber.reflectHost"                 = "FALSE"
-    "SMBIOS.use12CharSerialNumber"             = "TRUE"
-    "usb_xhci:4.deviceType"                    = "hid"
-    "usb_xhci:4.parent"                        = "-1"
-    "usb_xhci:4.port"                          = "4"
-    "usb_xhci:4.present"                       = "TRUE"
-    "usb_xhci:6.deviceType"                    = "hub"
-    "usb_xhci:6.parent"                        = "-1"
-    "usb_xhci:6.port"                          = "6"
-    "usb_xhci:6.present"                       = "TRUE"
-    "usb_xhci:6.speed"                         = "2"
-    "usb_xhci:7.deviceType"                    = "hub"
-    "usb_xhci:7.parent"                        = "-1"
-    "usb_xhci:7.port"                          = "7"
-    "usb_xhci:7.present"                       = "TRUE"
-    "usb_xhci:7.speed"                         = "4"
-    "usb_xhci.pciSlotNumber"                   = "192"
-    "usb_xhci.present"                         = "TRUE"
-    "hgfs.linkRootShare"                       = "FALSE"
-  }
-  vmx_data_post = {
-    "sata0:0.autodetect"     = "TRUE"
-    "sata0:0.deviceType"     = "cdrom-raw"
-    "sata0:0.fileName"       = "auto detect"
-    "sata0:0.startConnected" = "FALSE"
-    "sata0:0.present"        = "TRUE"
-    "vhv.enable"             = "TRUE"
-  }
+  vboxmanage           = [
+    ["modifyvm", "{{ .Name }}", "--vram", "128"],
+    ["modifyvm", "{{ .Name }}", "--graphicscontroller", "vmsvga"],
+    ["modifyvm", "{{ .Name }}", "--accelerate3d", "off"],
+    ["modifyvm", "{{ .Name }}", "--nestedpaging", "on"],
+    ["modifyvm", "{{ .Name }}", "--apic", "on"],
+    ["modifyvm", "{{ .Name }}", "--pae", "on"],
+    ["modifyvm", "{{ .Name }}", "--audiocontroller", "hda"],
+    ["modifyvm", "{{ .Name }}", "--boot1", "dvd"],
+    ["modifyvm", "{{ .Name }}", "--boot2", "disk"],
+    ["modifyvm", "{{ .Name }}", "--chipset", "ICH9"],
+    ["modifyvm", "{{ .Name }}", "--firmware", "EFI"],
+    ["modifyvm", "{{ .Name }}", "--hpet", "on"],
+    ["modifyvm", "{{ .Name }}", "--usbxhci", "on"],
+    ["modifyvm", "{{ .Name }}", "--keyboard", "usb"],
+    ["modifyvm", "{{ .Name }}", "--mouse", "usbtablet"],
+    ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--remove"],
+    ["modifyvm", "{{ .Name }}", "--cpuidset", "00000001 000106e5 00100800 0098e3fd bfebfbff"],
+    ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiSystemProduct", "${var.hw_model}"],
+    ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiSystemVersion", "1.0"],
+    ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiBoardProduct", "${var.board_id}"],
+    ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiBoardSerial", "${var.serial_number}"],
+    ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/smc/0/Config/DeviceKey", "ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"],
+    ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/smc/0/Config/GetKeyFromRealSMC", "1"],
+    ["setextradata", "{{ .Name }}", "VBoxInternal2/EfiGraphicsResolution", "1920x1080"]
+  ]
+  "vboxmanage_post": [
+    [ "storageattach", "{{.Name}}", "--storagectl", "IDE Controller", "--port", "1", "--device", "0", "--medium", "none" ]
+  ]
   boot_wait              = var.boot_wait_iso
   boot_key_interval      = var.boot_key_interval_iso
   boot_keygroup_interval = var.boot_keygroup_interval_iso
