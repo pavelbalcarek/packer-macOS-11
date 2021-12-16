@@ -155,6 +155,7 @@ source "virtualbox-iso" "macOS" {
     ["modifyvm", "{{ .Name }}", "--mouse", "usbtablet"],
     ["modifyvm", "{{ .Name }}", "--vrde", "${var.vrdp_status}"],
     ["modifyvm", "{{ .Name }}", "--rtcuseutc", "on"],
+    ["modifyvm", "{{ .Name }}", "--accelerate3d", "on"],
     ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--remove"],
     ["storagectl", "{{ .Name }}", "--name", "SATA Controller", "--portcount", "2"],
     ["modifyvm", "{{ .Name }}", "--cpuidset", "00000001", "000106e5", "00100800", "0098e3fd", "bfebfbff"],
