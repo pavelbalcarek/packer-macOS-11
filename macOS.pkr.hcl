@@ -135,6 +135,7 @@ source "virtualbox-iso" "macOS" {
   usb                  = "true"
   communicator         = "ssh"
   guest_additions_mode = "disable"
+  sata_port_count      = 2
   cpus                 = var.cpu_count
   memory               = var.ram_gb * 1024
   vboxmanage           = [
