@@ -150,7 +150,7 @@ source "virtualbox-iso" "macOS" {
     ["modifyvm", "{{ .Name }}", "--chipset", "ICH9"],
     ["modifyvm", "{{ .Name }}", "--firmware", "EFI"],
     ["modifyvm", "{{ .Name }}", "--hpet", "on"],
-    ["modifyvm", "{{ .Name }}", "--usbxhci", "on"],
+    ["modifyvm", "{{ .Name }}", "--usbxhci", "off"],
     ["modifyvm", "{{ .Name }}", "--keyboard", "usb"],
     ["modifyvm", "{{ .Name }}", "--mouse", "usbtablet"],
     ["modifyvm", "{{ .Name }}", "--vrde", "${var.vrdp_status}"],
