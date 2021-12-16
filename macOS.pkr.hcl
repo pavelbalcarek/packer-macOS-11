@@ -113,6 +113,11 @@ variable "vrdp_status" {
   default = "off"
 }
 
+variable "http_bind_address" {
+  type    = string
+  default = "127.0.0.1"
+}
+
 # source from iso
 source "virtualbox-iso" "macOS" {
   headless             = "${var.headless}"
@@ -131,6 +136,7 @@ source "virtualbox-iso" "macOS" {
   disk_size            = "40960"
   hard_drive_interface = "sata"
   http_directory       = "http"
+  http_bind_address    = "${var.http_bind_address}"
   ssh_timeout          = "12h"
   usb                  = "true"
   communicator         = "ssh"
