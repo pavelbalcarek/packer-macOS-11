@@ -93,33 +93,27 @@ variable "headless" {
   default = false
 }
 
-variable "vnc_bind_address" {
+variable "vrdp_bind_address" {
   type    = string
   default = "127.0.0.1"
 }
 
-variable "vnc_port_min" {
+variable "vrdp_port_min" {
   type    = string
   default = "5900"
 }
 
-variable "vnc_port_max" {
+variable "vrdp_port_max" {
   type    = string
   default = "6000"
-}
-
-variable "vnc_disable_password" {
-  type    = bool
-  default = false
 }
 
 # source from iso
 source "virtualbox-iso" "macOS" {
   headless             = "${var.headless}"
-  vnc_bind_address     = "${var.vnc_bind_address}"
-  vnc_disable_password = "${var.vnc_disable_password}"
-  vnc_port_min         = "${var.vnc_port_min}"
-  vnc_port_max         = "${var.vnc_port_max}"
+  vrdp_bind_address     = "${var.vrdp_bind_address}"
+  vrdp_port_min         = "${var.vrdp_port_min}"
+  vrdp_port_max         = "${var.vrdp_port_max}"
   display_name         = "{{build_name}} ${var.macos_version} base"
   vm_name              = "{{build_name}}_${var.macos_version}_base"
   vmdk_name            = "{{build_name}}_${var.macos_version}_base"
@@ -206,10 +200,9 @@ source "virtualbox-iso" "macOS" {
 # Customize build from existing vm
 source "virtualbox-ovf" "macOS" {
   headless             = "${var.headless}"
-  vnc_bind_address     = "${var.vnc_bind_address}"
-  vnc_disable_password = "${var.vnc_disable_password}"
-  vnc_port_min         = "${var.vnc_port_min}"
-  vnc_port_max         = "${var.vnc_port_max}"
+  vrdp_bind_address     = "${var.vrdp_bind_address}"
+  vrdp_port_min         = "${var.vrdp_port_min}"
+  vrdp_port_max         = "${var.vrdp_port_max}"
   display_name     = "{{build_name}} ${var.macos_version}"
   vm_name          = "{{build_name}}_${var.macos_version}"
   vmdk_name        = "{{build_name}}_${var.macos_version}"
