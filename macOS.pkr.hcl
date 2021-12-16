@@ -139,7 +139,7 @@ source "virtualbox-iso" "macOS" {
   memory               = var.ram_gb * 1024
   vboxmanage           = [
     ["modifyvm", "{{ .Name }}", "--vram", "128"],
-    ["modifyvm", "{{ .Name }}", "--graphicscontroller", "vmsvga"],
+    ["modifyvm", "{{ .Name }}", "--graphicscontroller", "vboxvga"],
     ["modifyvm", "{{ .Name }}", "--accelerate3d", "off"],
     ["modifyvm", "{{ .Name }}", "--nestedpaging", "on"],
     ["modifyvm", "{{ .Name }}", "--apic", "on"],
