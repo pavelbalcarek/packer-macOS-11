@@ -147,7 +147,7 @@ source "virtualbox-iso" "macOS" {
     ["modifyvm", "{{ .Name }}", "--keyboard", "usb"],
     ["modifyvm", "{{ .Name }}", "--mouse", "usbtablet"],
     ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--remove"],
-    ["modifyvm", "{{ .Name }}", "--cpuidset", "00000001 000106e5 00100800 0098e3fd bfebfbff"],
+    ["modifyvm", "{{ .Name }}", "--cpuidset", "00000001", "000106e5", "00100800", "0098e3fd", "bfebfbff"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiSystemProduct", "${var.hw_model}"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiSystemVersion", "1.0"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiBoardProduct", "${var.board_id}"],
