@@ -129,7 +129,6 @@ source "virtualbox-iso" "macOS" {
   ssh_timeout          = "12h"
   usb                  = "true"
   cpus                 = var.cpu_count
-  cores                = var.cpu_count
   memory               = var.ram_gb * 1024
   vboxmanage           = [
     ["modifyvm", "{{ .Name }}", "--vram", "128"],
@@ -161,7 +160,6 @@ source "virtualbox-iso" "macOS" {
     [ "storageattach", "{{.Name}}", "--storagectl", "IDE Controller", "--port", "1", "--device", "0", "--medium", "none" ]
   ]
   boot_wait              = var.boot_wait_iso
-  boot_key_interval      = var.boot_key_interval_iso
   boot_keygroup_interval = var.boot_keygroup_interval_iso
   boot_command = [
     "<enter><wait10s>",
