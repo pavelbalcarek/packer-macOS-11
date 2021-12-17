@@ -113,11 +113,6 @@ variable "vrdp_status" {
   default = "off"
 }
 
-variable "http_bind_address" {
-  type    = string
-  default = "127.0.0.1"
-}
-
 # source from iso
 source "virtualbox-iso" "macOS" {
   headless             = "${var.headless}"
@@ -135,8 +130,8 @@ source "virtualbox-iso" "macOS" {
   iso_interface        = "sata"
   disk_size            = "40960"
   hard_drive_interface = "sata"
-  http_directory       = "http"
-  http_bind_address    = "${var.http_bind_address}"
+  cd_label             = "cidata"
+  cd_files             = ["./http/*"]
   ssh_timeout          = "12h"
   usb                  = "true"
   communicator         = "ssh"
@@ -188,9 +183,9 @@ source "virtualbox-iso" "macOS" {
     "<leftCtrlon><f2><leftCtrloff>",
     "w<down><down>",
     "<enter>",
-    "curl -o /var/root/packer.pkg http://{{ .HTTPIP }}:{{ .HTTPPort }}/packer.pkg<enter>",
-    "curl -o /var/root/setupsshlogin.pkg http://{{ .HTTPIP }}:{{ .HTTPPort }}/setupsshlogin.pkg<enter>",
-    "curl -o /var/root/bootstrap.sh http://{{ .HTTPIP }}:{{ .HTTPPort }}/bootstrap.sh<enter>",
+    "diskutil mount /dev/disk1s2<enter>",
+    "cp /Volumes/cidata/bootstrap.sh /Volumes/cidata/packer.pkg /Volumes/cidata/setupsshlogin.pkg /var/root/<enter>",
+    "diskutil unmount /dev/disk1s2<enter>",
     "chmod +x /var/root/bootstrap.sh<enter>",
     "/var/root/bootstrap.sh<enter>"
   ]
