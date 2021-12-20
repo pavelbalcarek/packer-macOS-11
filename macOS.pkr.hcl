@@ -169,10 +169,6 @@ source "virtualbox-iso" "macOS" {
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/smc/0/Config/GetKeyFromRealSMC", "1"],
     ["setextradata", "{{ .Name }}", "VBoxInternal2/EfiGraphicsResolution", "1920x1080"]
   ]
-  vboxmanage_post      = [
-    [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "13", "--device", "0", "--medium", "none" ],
-    [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "15", "--device", "0", "--medium", "none" ]
-  ]
   boot_wait              = var.boot_wait_iso
   boot_keygroup_interval = var.boot_keygroup_interval_iso
   boot_command = [
