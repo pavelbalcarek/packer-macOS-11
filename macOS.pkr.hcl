@@ -170,7 +170,8 @@ source "virtualbox-iso" "macOS" {
     ["setextradata", "{{ .Name }}", "VBoxInternal2/EfiGraphicsResolution", "1920x1080"]
   ]
   vboxmanage_post      = [
-    [ "storageattach", "{{.Name}}", "--storagectl", "IDE Controller", "--port", "1", "--device", "0", "--medium", "none" ]
+    [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "13", "--device", "0", "--medium", "none" ],
+    [ "storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "15", "--device", "0", "--medium", "none" ]
   ]
   boot_wait              = var.boot_wait_iso
   boot_keygroup_interval = var.boot_keygroup_interval_iso
