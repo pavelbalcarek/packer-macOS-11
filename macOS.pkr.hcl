@@ -213,6 +213,10 @@ build {
     pause_before      = "2m" # needed for the first provisioner to let the OS finish booting
     script            = "scripts/os_settings.sh"
   }
+
+  post-processor "shell-local" {
+    inline = ["cp ~/VirtualBox\\ VM/{{build_name}}_${var.macos_version}_base/*.nvram output/{{build_name}}_${var.macos_version}/"]
+  }
 }
 
 build {
