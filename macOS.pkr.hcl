@@ -52,11 +52,6 @@ variable "serial_number" {
   default = "M00000000001"
 }
 
-variable "snapshot_linked" {
-  type    = bool
-  default = false
-}
-
 # Set this to DeveloperSeed if you want prerelease software updates
 variable "seeding_program" {
   type    = string
@@ -201,16 +196,9 @@ source "virtualbox-ovf" "macOS" {
   ssh_password     = "${var.user_password}"
   boot_wait        = "30s"
   skip_compaction  = true
-  linked           = var.snapshot_linked
   source_path      = "output/{{build_name}}_${var.macos_version}_base/macOS_${var.macos_version}_base.vmx"
   shutdown_command = "sudo shutdown -h now"
   output_directory = "output/{{build_name}}_${var.macos_version}"
-  vmx_data = {
-    "nvram" = "../../scripts/disablesip.nvram"
-  }
-  vmx_data_post = {
-    "nvram" = "{{build_name}}_${var.macos_version}.nvram"
-  }
 }
 
 # Base build
