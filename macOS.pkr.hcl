@@ -258,7 +258,7 @@ build {
       "SEEDING_PROGRAM=${var.seeding_program}"
     ]
     scripts = [
-      "scripts/xcode.sh",
+      "scripts/xcode_cli.sh",
       "scripts/softwareupdate.sh",
       "scripts/softwareupdate_complete.sh"
     ]
