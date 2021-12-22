@@ -42,6 +42,11 @@ variable "xcode_cli" {
   default = "install_bits/Command_Line_Tools_for_Xcode_13.1.dmg"
 }
 
+variable "xcode" {
+  type    = string
+  default = null
+}
+
 variable "board_id" {
   type    = string
   default = "Mac-27AD2F918AE68F61"
@@ -239,7 +244,7 @@ build {
   sources = ["sources.virtualbox-ovf.macOS"]
 
   provisioner "file" {
-    sources     = [var.xcode_cli, "submodules/tccutil/tccutil.py", "files/cliclick"]
+    sources     = [var.xcode, var.xcode_cli, "submodules/tccutil/tccutil.py", "files/cliclick"]
     destination = "~/"
   }
 
@@ -258,6 +263,7 @@ build {
       "SEEDING_PROGRAM=${var.seeding_program}"
     ]
     scripts = [
+      "scripts/xcode.sh",
       "scripts/xcode_cli.sh",
       "scripts/softwareupdate.sh",
       "scripts/softwareupdate_complete.sh"
