@@ -211,7 +211,6 @@ source "virtualbox-ovf" "macOS" {
   ssh_username     = "${var.user_username}"
   ssh_password     = "${var.user_password}"
   boot_wait        = "30s"
-  skip_compaction  = true
   source_path      = "output/{{build_name}}_${var.macos_version}_base/macOS_${var.macos_version}_base.ovf"
   shutdown_command = "sudo shutdown -h now"
   output_directory = "output/{{build_name}}_${var.macos_version}"
