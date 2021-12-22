@@ -137,7 +137,7 @@ source "virtualbox-iso" "macOS" {
   communicator         = "ssh"
   guest_additions_mode = "disable"
   sata_port_count      = 2
-  virtualbox_version_file = "/Users/${var.user_username}/.vbox_version"
+  virtualbox_version_file = ""
   keep_registered      = "${var.keep_registered}"
   cpus                 = var.cpu_count
   memory               = var.ram_gb * 1024
