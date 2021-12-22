@@ -32,6 +32,11 @@ variable "ram_gb" {
   default = "6"
 }
 
+variable "disk_size_gb" {
+  type    = number
+  default = "60"
+}
+
 variable "xcode_cli" {
   type    = string
   default = "install_bits/Command_Line_Tools_for_Xcode_13.1.dmg"
@@ -128,7 +133,6 @@ source "virtualbox-iso" "macOS" {
   shutdown_command     = "sudo shutdown -h now"
   guest_os_type        = "MacOS_64"
   iso_interface        = "sata"
-  disk_size            = "40960"
   hard_drive_interface = "sata"
   cd_label             = "cidata"
   cd_files             = ["./http/*"]
@@ -141,6 +145,7 @@ source "virtualbox-iso" "macOS" {
   keep_registered      = "${var.keep_registered}"
   cpus                 = var.cpu_count
   memory               = var.ram_gb * 1024
+  disk_size            = var.disk_size_gb * 1024
   vboxmanage           = [
     ["modifyvm", "{{ .Name }}", "--vram", "128"],
     ["modifyvm", "{{ .Name }}", "--graphicscontroller", "vboxvga"],
