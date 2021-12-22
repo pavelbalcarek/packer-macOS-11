@@ -221,7 +221,7 @@ build {
   }
 
   post-processor "shell-local" {
-    inline = ["cp ~/VirtualBox\\ VM/{{build_name}}_${var.macos_version}_base/*.nvram /tmp/{{build_name}}_${var.macos_version}.nvram"]
+    inline = ["cp ~/VirtualBox\\ VMs/{{build_name}}_${var.macos_version}_base/*.nvram /tmp/{{build_name}}_${var.macos_version}.nvram"]
   }
 }
 
