@@ -221,7 +221,11 @@ build {
   }
 
   post-processor "shell-local" {
-    inline = ["cp ~/VirtualBox\\ VMs/{{build_name}}_${var.macos_version}_base/*.nvram /tmp/{{build_name}}_${var.macos_version}.nvram"]
+    inline = [
+      "cp ~/VirtualBox\\ VMs/{{build_name}}_${var.macos_version}_base/*.nvram /tmp/{{build_name}}_${var.macos_version}.nvram",
+      "VBoxManage unregistervm --delete \"{{build_name}}_${var.macos_version}_base\"",
+      "cp /tmp/{{build_name}}_${var.macos_version}.nvram output/{{build_name}}_${var.macos_version}_base/"
+    ]
   }
 }
 
