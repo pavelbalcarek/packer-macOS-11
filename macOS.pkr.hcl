@@ -108,6 +108,11 @@ variable "vrdp_status" {
   default = "off"
 }
 
+variable "keep_registered" {
+  type    = bool
+  default = true
+}
+
 # source from iso
 source "virtualbox-iso" "macOS" {
   headless             = "${var.headless}"
@@ -133,6 +138,7 @@ source "virtualbox-iso" "macOS" {
   guest_additions_mode = "disable"
   sata_port_count      = 2
   virtualbox_version_file = "/Users/${var.user_username}/.vbox_version"
+  keep_registered      = "${var.keep_registered}"
   cpus                 = var.cpu_count
   memory               = var.ram_gb * 1024
   vboxmanage           = [
