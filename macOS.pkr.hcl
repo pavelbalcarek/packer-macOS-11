@@ -152,7 +152,7 @@ source "virtualbox-iso" "macOS" {
   usb                  = "true"
   communicator         = "ssh"
   guest_additions_mode = "disable"
-  sata_port_count      = 2
+  sata_port_count      = 4
   virtualbox_version_file = ""
   firmware             = "efi"
   keep_registered      = "${var.keep_registered}"
@@ -178,6 +178,7 @@ source "virtualbox-iso" "macOS" {
     ["modifyvm", "{{ .Name }}", "--rtcuseutc", "on"],
     ["modifyvm", "{{ .Name }}", "--accelerate3d", "on"],
     ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--remove"],
+    ["storagectl", "{{ .Name }}",  "--name", "SATA Controller", "--hostiocache", "on"],
     ["modifyvm", "{{ .Name }}", "--cpuidset", "00000001", "000106e5", "00100800", "0098e3fd", "bfebfbff"],
     ["modifyvm", "{{ .Name }}", "--nictype1", "82545EM"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiSystemProduct", "${var.hw_model}"],
