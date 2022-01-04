@@ -241,7 +241,7 @@ build {
     inline = [
       "cp ~/VirtualBox\\ VMs/{{build_name}}_${var.macos_version}_base/*.nvram /tmp/{{build_name}}_${var.macos_version}.nvram",
       "VBoxManage unregistervm --delete \"{{build_name}}_${var.macos_version}_base\"",
-      "cp /tmp/{{build_name}}_${var.macos_version}.nvram output/{{build_name}}_${var.macos_version}_base/"
+      "cp /tmp/{{build_name}}_${var.macos_version}_base.nvram output/{{build_name}}_${var.macos_version}_base/"
     ]
   }
 }
@@ -269,8 +269,8 @@ build {
     start_retry_timeout = "2h"
     environment_vars = [
       "SEEDING_PROGRAM=${var.seeding_program}",
-      "XCODE_PATH=${var.xcode}",
-      "XCODE_CLI_PATH=${var.xcode_cli}"
+      "XCODE_PATH=~/${var.install_bits}/${var.xcode}",
+      "XCODE_CLI_PATH=~/${var.install_bits}/${var.xcode_cli}"
     ]
     scripts = [
       "scripts/xcode.sh",
