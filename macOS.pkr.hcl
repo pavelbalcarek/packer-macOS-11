@@ -37,13 +37,20 @@ variable "disk_size_gb" {
   default = "60"
 }
 
+variable "install_bits" {
+  type    = string
+  default = "install_bits"
+}
+
 variable "xcode_cli" {
   type    = string
-  default = "install_bits/Command_Line_Tools_for_Xcode_13.1.dmg"
+  # path for xcode_cli in install_bits, for example: Command_Line_Tools_for_Xcode_13.1.dmg
+  default = null
 }
 
 variable "xcode" {
   type    = string
+  # path for xcode in install_bits, for example: Command_Line_Tools_for_Xcode_13.1.dmg
   default = null
 }
 
@@ -240,11 +247,12 @@ build {
 }
 
 build {
+  # packer build -force -only=customize.virtualbox-ovf.macOS -var headless=true macOS.pkr.hcl
   name    = "customize"
   sources = ["sources.virtualbox-ovf.macOS"]
 
   provisioner "file" {
-    sources     = [var.xcode, var.xcode_cli, "submodules/tccutil/tccutil.py", "files/cliclick"]
+    sources     = [var.install_bits, "submodules/tccutil/tccutil.py", "files/cliclick"]
     destination = "~/"
   }
 
@@ -260,7 +268,9 @@ build {
     expect_disconnect   = true
     start_retry_timeout = "2h"
     environment_vars = [
-      "SEEDING_PROGRAM=${var.seeding_program}"
+      "SEEDING_PROGRAM=${var.seeding_program}",
+      "XCODE_PATH=${var.xcode}",
+      "XCODE_CLI_PATH=${var.xcode_cli}"
     ]
     scripts = [
       "scripts/xcode.sh",

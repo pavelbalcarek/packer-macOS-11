@@ -3,15 +3,13 @@ set -euo pipefail
 IFS=$'\n\t'
 shopt -s nullglob nocaseglob
 
-XCODE_XIP=$(ls -d ~/Xcode*.zip | echo X)
-
-if [ ! -f "$XCODE_XIP" ]; then
-    echo "${XCODE_XIP} does not exist, skipping"
+if [ ! -f "$XCODE_PATH" ]; then
+    echo "${XCODE_PATH} does not exist, skipping"
     exit 0
 fi
 
 echo "unpacking xcode"
-xip -x ${XCODE_XIP}
+xip -x ${XCODE_PATH}
 #
 echo "Move Xcode to /Applications"
 sudo mv ~/Xcode*.app /Applications/
