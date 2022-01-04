@@ -147,6 +147,7 @@ source "virtualbox-iso" "macOS" {
   guest_additions_mode = "disable"
   sata_port_count      = 2
   virtualbox_version_file = ""
+  firmware             = "efi"
   keep_registered      = "${var.keep_registered}"
   cpus                 = var.cpu_count
   memory               = var.ram_gb * 1024
@@ -162,7 +163,6 @@ source "virtualbox-iso" "macOS" {
     ["modifyvm", "{{ .Name }}", "--boot1", "dvd"],
     ["modifyvm", "{{ .Name }}", "--boot2", "disk"],
     ["modifyvm", "{{ .Name }}", "--chipset", "ICH9"],
-    ["modifyvm", "{{ .Name }}", "--firmware", "EFI"],
     ["modifyvm", "{{ .Name }}", "--hpet", "on"],
     ["modifyvm", "{{ .Name }}", "--usbxhci", "off"],
     ["modifyvm", "{{ .Name }}", "--keyboard", "usb"],
@@ -218,6 +218,7 @@ source "virtualbox-ovf" "macOS" {
 
 # Base build
 build {
+  # packer build -force -only=base.virtualbox-iso.macOS -var iso_filename=/Users/Shared/MacOSBigSur.iso.cdr -var iso_file_checksum=none -var headless=true -var boot_wait_iso=180s -var cpu_count=6 -var ram_gb=8  macOS.pkr.hcl
   name = "base"
   sources = [
     "sources.virtualbox-iso.macOS"
