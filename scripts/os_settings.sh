@@ -17,7 +17,4 @@ if [[ -e /Library/LaunchDaemons/ssh.plist ]]; then
   sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 fi
 
-# setup efi boot
-echo '\System\Library\CoreServices\boot.efi' | sudo tee -a /startup.nsh
-
 exit 0
