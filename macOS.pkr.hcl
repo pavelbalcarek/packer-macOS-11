@@ -223,6 +223,14 @@ source "virtualbox-vm" "macOS" {
   ssh_username      = "${var.user_username}"
   ssh_password      = "${var.user_password}"
   output_directory  = "output/{{build_name}}_${var.macos_version}"
+  vboxmanage        = [
+    ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--add", "ide", "--controller", "PIIX4"],
+  ]
+  vboxmanage_post   = [
+    ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--remove"],
+  ]
+  cd_files          = ["./${var.install_bits}/*"]
+  cd_label          = "${var.install_bits}"
 }
 
 # Base build
@@ -256,8 +264,14 @@ build {
   sources = ["sources.virtualbox-vm.macOS"]
 
   provisioner "file" {
-    sources     = [var.install_bits, "submodules/tccutil/tccutil.py", "files/cliclick"]
+    sources     = ["submodules/tccutil/tccutil.py", "files/cliclick"]
     destination = "~/"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "diskutil mount ${var.install_bits}"
+    ]
   }
 
   provisioner "shell" {
@@ -273,14 +287,20 @@ build {
     start_retry_timeout = "2h"
     environment_vars = [
       "SEEDING_PROGRAM=${var.seeding_program}",
-      "XCODE_PATH=~/${var.install_bits}/${var.xcode}",
-      "XCODE_CLI_PATH=~/${var.install_bits}/${var.xcode_cli}"
+      "XCODE_PATH=/Volumes/${var.install_bits}/${var.xcode}",
+      "XCODE_CLI_PATH=/Volumes/${var.install_bits}/${var.xcode_cli}"
     ]
     scripts = [
       "scripts/xcode.sh",
       "scripts/xcode_cli.sh",
       "scripts/softwareupdate.sh",
       "scripts/softwareupdate_complete.sh"
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "diskutil unmount ${var.install_bits}"
     ]
   }
 
