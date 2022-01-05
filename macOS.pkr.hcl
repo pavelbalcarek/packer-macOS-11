@@ -209,19 +209,20 @@ source "virtualbox-iso" "macOS" {
   ]
 }
 
-# Customize build from existing vm
-source "virtualbox-ovf" "macOS" {
-  headless             = "${var.headless}"
-  vrdp_bind_address     = "${var.vrdp_bind_address}"
-  vrdp_port_min         = "${var.vrdp_port_min}"
-  vrdp_port_max         = "${var.vrdp_port_max}"
-  vm_name          = "{{build_name}}_${var.macos_version}"
-  ssh_username     = "${var.user_username}"
-  ssh_password     = "${var.user_password}"
-  boot_wait        = "30s"
-  source_path      = "output/{{build_name}}_${var.macos_version}_base/macOS_${var.macos_version}_base.ovf"
-  shutdown_command = "sudo shutdown -h now"
-  output_directory = "output/{{build_name}}_${var.macos_version}"
+# Customize existing VM machine (manually imported into VirtualBox)
+# This is due to issue with NVRAM, that is not imported by standard virtualbox-ovf
+source "virtualbox-vm" "macOS" {
+  headless          = "${var.headless}"
+  vm_name           = "{{build_name}}_${var.macos_version}"
+  vrdp_bind_address = "${var.vrdp_bind_address}"
+  vrdp_port_min     = "${var.vrdp_port_min}"
+  vrdp_port_max     = "${var.vrdp_port_max}"
+  shutdown_command  = "sudo shutdown -h now"
+  boot_wait         = "30s"
+  communicator      = "ssh"
+  ssh_username      = "${var.user_username}"
+  ssh_password      = "${var.user_password}"
+  output_directory  = "output/{{build_name}}_${var.macos_version}"
 }
 
 # Base build
@@ -248,9 +249,11 @@ build {
 }
 
 build {
-  # packer build -force -only=customize.virtualbox-ovf.macOS -var headless=true macOS.pkr.hcl
+  # manual import:
+  # VBoxManage import ./output/macOS_12.0_base/macOS_12.0_base.ovf --vsys 0 --vmname macOS_12.0
+  # packer build -force -only=customize.virtualbox-vm.macOS -var headless=true macOS.pkr.hcl
   name    = "customize"
-  sources = ["sources.virtualbox-ovf.macOS"]
+  sources = ["sources.virtualbox-vm.macOS"]
 
   provisioner "file" {
     sources     = [var.install_bits, "submodules/tccutil/tccutil.py", "files/cliclick"]
