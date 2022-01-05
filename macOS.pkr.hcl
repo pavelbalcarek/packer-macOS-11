@@ -290,7 +290,4 @@ build {
     inline            = var.bootstrapper_script
   }
 
-  post-processor "shell-local" {
-    inline = ["scripts/vmx_cleanup.sh output/{{build_name}}_${var.macos_version}/macOS_${var.macos_version}.vmx"]
-  }
 }
