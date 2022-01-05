@@ -218,7 +218,7 @@ source "virtualbox-vm" "macOS" {
   vrdp_port_min     = "${var.vrdp_port_min}"
   vrdp_port_max     = "${var.vrdp_port_max}"
   shutdown_command  = "sudo shutdown -h now"
-  boot_wait         = "30s"
+  boot_wait         = "180s"
   communicator      = "ssh"
   ssh_username      = "${var.user_username}"
   ssh_password      = "${var.user_password}"
