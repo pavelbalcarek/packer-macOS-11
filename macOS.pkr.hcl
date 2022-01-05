@@ -223,14 +223,7 @@ source "virtualbox-vm" "macOS" {
   ssh_username      = "${var.user_username}"
   ssh_password      = "${var.user_password}"
   output_directory  = "output/{{build_name}}_${var.macos_version}"
-  vboxmanage        = [
-    ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--add", "ide", "--controller", "PIIX4"],
-  ]
-  vboxmanage_post   = [
-    ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--remove"],
-  ]
-  cd_files          = ["./${var.install_bits}/*"]
-  cd_label          = "${var.install_bits}"
+  http_directory    = "${var.install_bits}"
 }
 
 # Base build
@@ -269,8 +262,19 @@ build {
   }
 
   provisioner "shell" {
+    expect_disconnect   = true
     inline = [
-      "diskutil mount ${var.install_bits}"
+      "echo \"Creating ${var.install_bits}\"",
+      "mkdir ${var.install_bits} | exit 0",
+      "echo \"Downloading from http://$PACKER_HTTP_IP:$PACKER_HTTP_PORT/${var.xcode}\"",
+      "curl http://$PACKER_HTTP_IP:$PACKER_HTTP_PORT/${var.xcode} --output ${var.install_bits}/${var.xcode}"
+    ]
+  }
+
+  provisioner "shell" {
+    expect_disconnect   = true
+    inline = [
+      "curl http://$PACKER_HTTP_IP:$PACKER_HTTP_PORT/${var.xcode_cli} -o ${var.install_bits}/${var.xcode_cli}"
     ]
   }
 
@@ -287,8 +291,8 @@ build {
     start_retry_timeout = "2h"
     environment_vars = [
       "SEEDING_PROGRAM=${var.seeding_program}",
-      "XCODE_PATH=/Volumes/${var.install_bits}/${var.xcode}",
-      "XCODE_CLI_PATH=/Volumes/${var.install_bits}/${var.xcode_cli}"
+      "XCODE_PATH=~/${var.install_bits}/${var.xcode}",
+      "XCODE_CLI_PATH=~/${var.install_bits}/${var.xcode_cli}"
     ]
     scripts = [
       "scripts/xcode.sh",
