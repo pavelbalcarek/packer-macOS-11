@@ -291,9 +291,7 @@ build {
     ]
     scripts = [
       "scripts/xcode_cli.sh",
-      "scripts/xcode.sh",
-      "scripts/softwareupdate.sh",
-      "scripts/softwareupdate_complete.sh"
+      "scripts/xcode.sh"
     ]
   }
 
