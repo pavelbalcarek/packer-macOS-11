@@ -32,6 +32,6 @@ hdiutil detach "/Volumes/Command Line Developer Tools/" -force -quiet
 
 echo "Cleanup Xcode installer files"
 #rm ~/Xcode*.xip
-rm ~/Command_Line_Tools_*.dmg
+rm "${XCODE_CLI_PATH}"
 
 exit 0
