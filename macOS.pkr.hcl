@@ -290,8 +290,8 @@ build {
       "XCODE_CLI_PATH=/Users/${var.user_username}/${var.install_bits}/${var.xcode_cli}"
     ]
     scripts = [
-      "scripts/xcode.sh",
       "scripts/xcode_cli.sh",
+      "scripts/xcode.sh",
       "scripts/softwareupdate.sh",
       "scripts/softwareupdate_complete.sh"
     ]
