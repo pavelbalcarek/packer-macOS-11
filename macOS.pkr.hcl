@@ -267,14 +267,14 @@ build {
       "echo \"Creating ${var.install_bits}\"",
       "mkdir ${var.install_bits} | exit 0",
       "echo \"Downloading from http://$PACKER_HTTP_IP:$PACKER_HTTP_PORT/${var.xcode}\"",
-      "curl http://$PACKER_HTTP_IP:$PACKER_HTTP_PORT/${var.xcode} --output ${var.install_bits}/${var.xcode}"
+      "curl http://$PACKER_HTTP_IP:$PACKER_HTTP_PORT/${var.xcode} --output ~/${var.install_bits}/${var.xcode}"
     ]
   }
 
   provisioner "shell" {
     expect_disconnect   = true
     inline = [
-      "curl http://$PACKER_HTTP_IP:$PACKER_HTTP_PORT/${var.xcode_cli} -o ${var.install_bits}/${var.xcode_cli}"
+      "curl http://$PACKER_HTTP_IP:$PACKER_HTTP_PORT/${var.xcode_cli} --output ~/${var.install_bits}/${var.xcode_cli}"
     ]
   }
 

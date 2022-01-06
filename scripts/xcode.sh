@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 shopt -s nullglob nocaseglob
 
-if [ ! -f "$XCODE_PATH" ]; then
+if [ ! -f "${XCODE_PATH}" ]; then
     echo "${XCODE_PATH} does not exist, skipping"
     exit 0
 fi

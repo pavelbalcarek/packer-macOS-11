@@ -10,7 +10,7 @@ shopt -s nullglob nocaseglob
 #sudo mv ~/Xcode*.app /Applications/
 
 echo "mount cli tools"
-hdiutil attach -quiet -noverify -mountpoint "/Volumes/Command Line Developer Tools/" "~/${XCODE_CLI_PATH}"
+hdiutil attach -quiet -noverify -mountpoint "/Volumes/Command Line Developer Tools/" "${XCODE_CLI_PATH}"
 
 echo "install the cli tools"
 sudo installer -pkg "/Volumes/Command Line Developer Tools/Command Line Tools.pkg" -target / || true
