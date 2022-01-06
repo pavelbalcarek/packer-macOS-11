@@ -23,4 +23,6 @@ sudo /usr/bin/xcode-select -s ${XCODE_APP}/Contents/Developer
 sudo /usr/bin/xcodebuild -license accept
 sudo /usr/bin/xcodebuild -runFirstLaunch
 
+rm "${XCODE_PATH}"
+
 exit 0
