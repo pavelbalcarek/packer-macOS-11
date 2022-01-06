@@ -223,7 +223,6 @@ source "virtualbox-vm" "macOS" {
   ssh_username      = "${var.user_username}"
   ssh_password      = "${var.user_password}"
   output_directory  = "output/{{build_name}}_${var.macos_version}"
-  http_directory    = "${var.install_bits}"
 }
 
 # Base build
@@ -261,20 +260,16 @@ build {
     destination = "~/"
   }
 
-  provisioner "shell" {
-    expect_disconnect   = true
-    inline = [
-      "echo \"Creating ${var.install_bits}\"",
-      "mkdir ${var.install_bits} | exit 0",
-      "echo \"Downloading from http://$PACKER_HTTP_IP:$PACKER_HTTP_PORT/${var.xcode}\"",
-      "curl http://$PACKER_HTTP_IP:$PACKER_HTTP_PORT/${var.xcode} --output ~/${var.install_bits}/${var.xcode}"
-    ]
+  provisioner "file" {
+    sources     = ["${var.install_bits}"]
+    destination = "~/"
   }
 
   provisioner "shell" {
-    expect_disconnect   = true
     inline = [
-      "curl http://$PACKER_HTTP_IP:$PACKER_HTTP_PORT/${var.xcode_cli} --output ~/${var.install_bits}/${var.xcode_cli}"
+      "ls -la ${var.install_bits}",
+      "ls -la ~/${var.install_bits}",
+      "ls -la ~/"
     ]
   }
 
@@ -291,20 +286,14 @@ build {
     start_retry_timeout = "2h"
     environment_vars = [
       "SEEDING_PROGRAM=${var.seeding_program}",
-      "XCODE_PATH=~/${var.install_bits}/${var.xcode}",
-      "XCODE_CLI_PATH=~/${var.install_bits}/${var.xcode_cli}"
+      "XCODE_PATH=/Users/${var.user_username}/${var.install_bits}/${var.xcode}",
+      "XCODE_CLI_PATH=/Users/${var.user_username}/${var.install_bits}/${var.xcode_cli}"
     ]
     scripts = [
       "scripts/xcode.sh",
       "scripts/xcode_cli.sh",
       "scripts/softwareupdate.sh",
       "scripts/softwareupdate_complete.sh"
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "diskutil unmount ${var.install_bits}"
     ]
   }
 
