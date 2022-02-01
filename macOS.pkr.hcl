@@ -34,7 +34,7 @@ variable "ram_gb" {
 
 variable "disk_size_gb" {
   type    = number
-  default = "60"
+  default = "70"
 }
 
 variable "install_bits" {
