@@ -251,6 +251,7 @@ build {
 build {
   # manual import:
   # VBoxManage import ./output/macOS_12.0_base/macOS_12.0_base.ovf --vsys 0 --vmname macOS_12.0
+  # cp output/macOS_12.0_base/macOS_12.0_base.nvram ~/VirtualBox\ VMs/macOS_12.0/macOS_12.0.nvram
   # packer build -force -only=customize.virtualbox-vm.macOS -var headless=true macOS.pkr.hcl
   name    = "customize"
   sources = ["sources.virtualbox-vm.macOS"]
