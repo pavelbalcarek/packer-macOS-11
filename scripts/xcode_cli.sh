@@ -3,6 +3,11 @@ set -euo pipefail
 IFS=$'\n\t'
 shopt -s nullglob nocaseglob
 
+if [ ! -f "${XCODE_CLI_PATH}" ]; then
+    echo "${XCODE_CLI_PATH} does not exist, skipping"
+    exit 0
+fi
+
 #echo "unpacking xcode"
 #xip -x ~/Xcode*.xip
 #
