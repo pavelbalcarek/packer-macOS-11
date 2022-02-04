@@ -265,8 +265,10 @@ build {
 
   provisioner "shell" {
     inline = [
-      "ls -la /Volumes/${var.install_bits}",
-      "ls -la /Volumes/"
+      "diskutil list",
+      "diskutil mount ${var.install_bits}",
+      "ls -la /Volumes/",
+      "ls -la /Volumes/${var.install_bits}"
     ]
   }
 
