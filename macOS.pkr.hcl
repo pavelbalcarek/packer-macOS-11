@@ -225,12 +225,6 @@ source "virtualbox-vm" "macOS" {
   output_directory  = "output/{{build_name}}_${var.macos_version}"
   cd_label          = "${var.install_bits}"
   cd_files          = ["./${var.install_bits}/*"]
-  vboxmanage        = [
-    ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--add", "ide"],
-  ]
-  vboxmanage_post   = [
-    ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--remove"],
-  ]
 }
 
 # Base build
