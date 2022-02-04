@@ -177,7 +177,6 @@ source "virtualbox-iso" "macOS" {
     ["modifyvm", "{{ .Name }}", "--vrde", "${var.vrdp_status}"],
     ["modifyvm", "{{ .Name }}", "--rtcuseutc", "on"],
     ["modifyvm", "{{ .Name }}", "--accelerate3d", "on"],
-    ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--remove"],
     ["storagectl", "{{ .Name }}",  "--name", "SATA Controller", "--hostiocache", "on"],
     ["modifyvm", "{{ .Name }}", "--cpuidset", "00000001", "000106e5", "00100800", "0098e3fd", "bfebfbff"],
     ["modifyvm", "{{ .Name }}", "--nictype1", "82545EM"],
@@ -255,6 +254,8 @@ build {
   # VBoxManage import ./output/macOS_12.0_base/macOS_12.0_base.ovf --vsys 0 --vmname macOS_12.0
   # cp output/macOS_12.0_base/macOS_12.0_base.nvram ~/VirtualBox\ VMs/macOS_12.0/macOS_12.0.nvram
   # packer build -force -only=customize.virtualbox-vm.macOS -var headless=true macOS.pkr.hcl
+
+  # VBoxManage storagectl macOS_12.0 --name "IDE Controller" --add ide --controller piix3
   name    = "customize"
   sources = ["sources.virtualbox-vm.macOS"]
 
