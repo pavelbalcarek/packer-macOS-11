@@ -223,6 +223,8 @@ source "virtualbox-vm" "macOS" {
   ssh_username      = "${var.user_username}"
   ssh_password      = "${var.user_password}"
   output_directory  = "output/{{build_name}}_${var.macos_version}"
+  cd_label          = "${var.install_bits}"
+  cd_files          = ["./${var.install_bits}/*"]
 }
 
 # Base build
@@ -261,16 +263,10 @@ build {
     destination = "~/"
   }
 
-  provisioner "file" {
-    sources     = ["${var.install_bits}"]
-    destination = "~/"
-  }
-
   provisioner "shell" {
     inline = [
-      "ls -la ${var.install_bits}",
-      "ls -la ~/${var.install_bits}",
-      "ls -la ~/"
+      "ls -la /Volumes/${var.install_bits}",
+      "ls -la /Volumes/"
     ]
   }
 
@@ -287,8 +283,8 @@ build {
     start_retry_timeout = "2h"
     environment_vars = [
       "SEEDING_PROGRAM=${var.seeding_program}",
-      "XCODE_PATH=/Users/${var.user_username}/${var.install_bits}/${var.xcode}",
-      "XCODE_CLI_PATH=/Users/${var.user_username}/${var.install_bits}/${var.xcode_cli}"
+      "XCODE_PATH=/Volumes/${var.install_bits}/${var.xcode}",
+      "XCODE_CLI_PATH=/Volumes/${var.install_bits}/${var.xcode_cli}"
     ]
     scripts = [
       "scripts/xcode_cli.sh",
