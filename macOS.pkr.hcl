@@ -225,6 +225,7 @@ source "virtualbox-vm" "macOS" {
   output_directory  = "output/{{build_name}}_${var.macos_version}"
   cd_label          = "${var.install_bits}"
   cd_files          = ["./${var.install_bits}/*"]
+  guest_additions_interface = "sata"
 }
 
 # Base build
