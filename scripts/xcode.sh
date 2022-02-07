@@ -8,11 +8,6 @@ if [ ! -f "${XCODE_PATH}" ]; then
     exit 0
 fi
 
-echo "generate dummy file to handle 'not enough storage when unpacking xip'"
-dd if=/dev/urandom of=/tmp/dummy-20gb bs=1024 count=$[1024 * 1024 * 20]
-sleep 10s
-rm /tmp/dummy-20gb
-
 echo "unpacking xcode"
 xip -x ${XCODE_PATH}
 #
@@ -28,6 +23,7 @@ sudo /usr/bin/xcode-select -s ${XCODE_APP}/Contents/Developer
 sudo /usr/bin/xcodebuild -license accept
 sudo /usr/bin/xcodebuild -runFirstLaunch
 
-rm "${XCODE_PATH}"
+echo "Cleanup Xcode installer files (optional, it might be provisioned via cd_files)"
+rm "${XCODE_PATH}" || true
 
 exit 0

@@ -33,10 +33,10 @@ sudo /usr/sbin/DevToolsSecurity -enable
 sudo dseditgroup -o add everyone -t group _developer
 
 echo "unmount cli tools"
-hdiutil detach "/Volumes/Command Line Developer Tools/" -force -quiet   
+hdiutil detach "/Volumes/Command Line Developer Tools/" -force -quiet
 
-echo "Cleanup Xcode installer files"
+echo "Cleanup Xcode CLI installer files (optional, it might be provisioned via cd_files)"
 #rm ~/Xcode*.xip
-rm "${XCODE_CLI_PATH}"
+rm "${XCODE_CLI_PATH}" || true
 
 exit 0
