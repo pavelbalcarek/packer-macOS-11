@@ -130,6 +130,11 @@ variable "keep_registered" {
   default = true
 }
 
+variable "skip_export" {
+  type    = bool
+  default = false
+}
+
 # suffix for base machine, leave empty for "full" builder
 variable "base_suffix" {
   type    = string
@@ -162,6 +167,7 @@ source "virtualbox-iso" "macOS" {
   virtualbox_version_file = ""
   firmware             = "efi"
   keep_registered      = "${var.keep_registered}"
+  skip_export          = "${var.skip_export}"
   cpus                 = var.cpu_count
   memory               = var.ram_gb * 1024
   disk_size            = var.disk_size_gb * 1024
@@ -232,6 +238,8 @@ source "virtualbox-vm" "macOS" {
   cd_label          = "${var.install_bits}"
   cd_files          = ["./${var.install_bits}/*"]
   guest_additions_interface = "sata"
+  keep_registered   = "${var.keep_registered}"
+  skip_export       = "${var.skip_export}"
 }
 
 # Base build
