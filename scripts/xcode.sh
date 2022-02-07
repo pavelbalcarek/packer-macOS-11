@@ -28,6 +28,7 @@ sudo /usr/bin/xcode-select -s ${XCODE_APP}/Contents/Developer
 sudo /usr/bin/xcodebuild -license accept
 sudo /usr/bin/xcodebuild -runFirstLaunch
 
-rm "${XCODE_PATH}"
+echo "Cleanup Xcode installer files (optional, it might be provisioned via cd_files)"
+rm "${XCODE_PATH}" || true
 
 exit 0
