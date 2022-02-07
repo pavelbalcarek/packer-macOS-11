@@ -374,4 +374,11 @@ build {
     inline            = var.bootstrapper_script
   }
 
+  post-processor "vagrant" {
+    keep_input_artifact = true
+    provider_override   = "virtualbox"
+    include = [
+      "~/VirtualBox\\ VMs/{{build_name}}_${var.macos_version}${var.base_suffix}/{{build_name}}_${var.macos_version}${var.base_suffix}.nvram"
+    ]
+  }
 }
