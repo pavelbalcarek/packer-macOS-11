@@ -130,16 +130,22 @@ variable "keep_registered" {
   default = true
 }
 
+# suffix for base machine, leave empty for "full" builder
+variable "base_suffix" {
+  type    = string
+  default = "_base"
+}
+
 # source from iso
 source "virtualbox-iso" "macOS" {
   headless             = "${var.headless}"
   vrdp_bind_address     = "${var.vrdp_bind_address}"
   vrdp_port_min         = "${var.vrdp_port_min}"
   vrdp_port_max         = "${var.vrdp_port_max}"
-  vm_name              = "{{build_name}}_${var.macos_version}_base"
+  vm_name              = "{{build_name}}_${var.macos_version}${var.base_suffix}"
   iso_url              = "${var.iso_filename}"
   iso_checksum         = "${var.iso_file_checksum}"
-  output_directory     = "output/{{build_name}}_${var.macos_version}_base"
+  output_directory     = "output/{{build_name}}_${var.macos_version}${var.base_suffix}"
   ssh_username         = "${var.user_username}"
   ssh_password         = "${var.user_password}"
   shutdown_command     = "sudo shutdown -h now"
@@ -244,9 +250,9 @@ build {
 
   post-processor "shell-local" {
     inline = [
-      "cp ~/VirtualBox\\ VMs/{{build_name}}_${var.macos_version}_base/*.nvram /tmp/{{build_name}}_${var.macos_version}_base.nvram",
-      "VBoxManage unregistervm --delete \"{{build_name}}_${var.macos_version}_base\"",
-      "cp /tmp/{{build_name}}_${var.macos_version}_base.nvram output/{{build_name}}_${var.macos_version}_base/"
+      "cp ~/VirtualBox\\ VMs/{{build_name}}_${var.macos_version}${var.base_suffix}/*.nvram /tmp/{{build_name}}_${var.macos_version}${var.base_suffix}.nvram",
+      "VBoxManage unregistervm --delete \"{{build_name}}_${var.macos_version}${var.base_suffix}\"",
+      "cp /tmp/{{build_name}}_${var.macos_version}${var.base_suffix}.nvram output/{{build_name}}_${var.macos_version}${var.base_suffix}/"
     ]
   }
 }
@@ -300,5 +306,4 @@ build {
     expect_disconnect = true
     inline            = var.bootstrapper_script
   }
-
 }
