@@ -322,17 +322,14 @@ build {
   # packer build -force -only=full -var iso_filename=/Users/Shared/MacOSBigSur.iso.cdr -var iso_file_checksum=none -var headless=true -var boot_wait_iso=180s -var cpu_count=4 -var ram_gb=8  macOS.pkr.hcl
   name = "full"
   sources = [
-    "sources.virtualbox-iso.macOS"
+    "sources.virtualbox-iso.macOS",
+    "sources.virtualbox-vm.macOS"
   ]
 
   provisioner "shell" {
     expect_disconnect = true
     pause_before      = "2m" # needed for the first provisioner to let the OS finish booting
     script            = "scripts/os_settings.sh"
-  }
-
-  source "sources.virtualbox-vm.macOS" {
-    name = "custom"
   }
 
   provisioner "file" {
