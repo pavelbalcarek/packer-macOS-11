@@ -331,7 +331,9 @@ build {
     script            = "scripts/os_settings.sh"
   }
 
-  source "sources.virtualbox-vm.macOS"
+  source "sources.virtualbox-vm.macOS" {
+    name = "custom"
+  }
 
   provisioner "file" {
     sources     = ["submodules/tccutil/tccutil.py", "files/cliclick"]
