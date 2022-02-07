@@ -315,3 +315,63 @@ build {
     inline            = var.bootstrapper_script
   }
 }
+
+
+# Base build
+build {
+  # packer build -force -only=full -var iso_filename=/Users/Shared/MacOSBigSur.iso.cdr -var iso_file_checksum=none -var headless=true -var boot_wait_iso=180s -var cpu_count=4 -var ram_gb=8  macOS.pkr.hcl
+  name = "full"
+  sources = [
+    "sources.virtualbox-iso.macOS"
+  ]
+
+  provisioner "shell" {
+    expect_disconnect = true
+    pause_before      = "2m" # needed for the first provisioner to let the OS finish booting
+    script            = "scripts/os_settings.sh"
+  }
+
+  source "sources.virtualbox-vm.macOS"
+
+  provisioner "file" {
+    sources     = ["submodules/tccutil/tccutil.py", "files/cliclick"]
+    destination = "~/"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "diskutil list",
+      "diskutil mount ${var.install_bits}",
+      "ls -la /Volumes/${var.install_bits}"
+    ]
+  }
+
+  provisioner "shell" {
+    environment_vars = [
+      "USER_PASSWORD=${var.user_password}"
+    ]
+    expect_disconnect = true
+    script            = "scripts/os_configure.sh"
+  }
+
+  provisioner "shell" {
+    expect_disconnect   = true
+    start_retry_timeout = "2h"
+    environment_vars = [
+      "SEEDING_PROGRAM=${var.seeding_program}",
+      "XCODE_PATH=/Volumes/${var.install_bits}/${var.xcode}",
+      "XCODE_CLI_PATH=/Volumes/${var.install_bits}/${var.xcode_cli}"
+    ]
+    scripts = [
+      "scripts/xcode_cli.sh",
+      "scripts/xcode.sh"
+    ]
+  }
+
+  # optionally call external bootstrap script set by var.bootstrapper_script
+  provisioner "shell" {
+    expect_disconnect = true
+    inline            = var.bootstrapper_script
+  }
+
+}
