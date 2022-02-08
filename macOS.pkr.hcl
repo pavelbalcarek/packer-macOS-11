@@ -24,12 +24,12 @@ variable "user_username" {
 
 variable "cpu_count" {
   type    = number
-  default = "2"
+  default = "4"
 }
 
 variable "ram_gb" {
   type    = number
-  default = "6"
+  default = "8"
 }
 
 variable "disk_size_gb" {
