@@ -166,7 +166,7 @@ source "virtualbox-iso" "macOS" {
   sata_port_count      = 4
   virtualbox_version_file = ""
   firmware             = "efi"
-  keep_registered      = "${var.keep_registered}"
+  keep_registered      = true
   skip_export          = "${var.skip_export}"
   cpus                 = var.cpu_count
   memory               = var.ram_gb * 1024
@@ -258,9 +258,8 @@ build {
 
   post-processor "shell-local" {
     inline = [
-      "cp ~/VirtualBox\\ VMs/{{build_name}}_${var.macos_version}${var.base_suffix}/*.nvram /tmp/{{build_name}}_${var.macos_version}${var.base_suffix}.nvram",
-      "VBoxManage unregistervm --delete \"{{build_name}}_${var.macos_version}${var.base_suffix}\"",
-      "cp /tmp/{{build_name}}_${var.macos_version}${var.base_suffix}.nvram output/{{build_name}}_${var.macos_version}${var.base_suffix}/"
+      "if [ \"${var.skip_export}\" == \"false\" ]; then cp ~/VirtualBox\\ VMs/{{build_name}}_${var.macos_version}${var.base_suffix}/*.nvram output/{{build_name}}_${var.macos_version}${var.base_suffix}/; fi",
+      "if [ \"${var.keep_registered}\" == \"false\" ]; then VBoxManage unregistervm --delete \"{{build_name}}_${var.macos_version}${var.base_suffix}\"; fi"
     ]
   }
 }
