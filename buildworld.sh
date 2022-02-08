@@ -11,6 +11,10 @@ if ! [[ -e "$VARFILE" ]]; then
 fi
 
 # change to project root dir
+realpath() {
+  [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
 SCRIPT_PATH=$(realpath "$0")
 SCRIPT_PATH="${SCRIPT_PATH/buildworld.sh/}"
 cd "$SCRIPT_PATH"
@@ -27,8 +31,8 @@ trap kill_spawn EXIT SIGINT
 
 # start full build
 (
-  packer build -force -only base.vmware-iso.macOS -var-file "$VARFILE" macOS.pkr.hcl &&
-    packer build -force -only=customize.vmware-vmx.macOS -var-file "$VARFILE" macOS.pkr.hcl
+  packer build -force -only base.virtualbox-iso.macOS -var-file "$VARFILE" macOS.pkr.hcl &&
+    packer build -force -only=customize.virtualbox-vm.macOS -var-file "$VARFILE" macOS.pkr.hcl
 ) &
 
 # Wait for all builds to finish
