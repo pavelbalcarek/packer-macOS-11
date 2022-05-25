@@ -77,7 +77,7 @@ variable "seeding_program" {
 
 variable "boot_key_interval_iso" {
   type    = string
-  default = "150ms"
+  default = "250ms"
 }
 
 variable "boot_wait_iso" {
