@@ -233,8 +233,7 @@ source "virtualbox-vm" "macOS" {
   ssh_username      = "${var.user_username}"
   ssh_password      = "${var.user_password}"
   output_directory  = "output/{{build_name}}_${var.macos_version}"
-  cd_label          = "${var.install_bits}"
-  cd_files          = ["./${var.install_bits}/*"]
+  http_directory    = "${var.install_bits}"
   guest_additions_interface = "sata"
   keep_registered   = "${var.keep_registered}"
   skip_export       = "${var.skip_export}"
@@ -276,15 +275,6 @@ build {
   }
 
   provisioner "shell" {
-    inline = [
-      "diskutil list",
-      "diskutil mount ${var.install_bits}",
-      "ls -la /Volumes/",
-      "ls -la /Volumes/${var.install_bits}"
-    ]
-  }
-
-  provisioner "shell" {
     environment_vars = [
       "USER_PASSWORD=${var.user_password}"
     ]
@@ -293,16 +283,34 @@ build {
   }
 
   provisioner "shell" {
+    inline = [
+      "echo 'Create folder'",
+      "mkdir /tmp/${var.install_bits}",
+      "echo \"http://${build.PackerHTTPIP}:${build.PackerHTTPPort}/${var.xcode}\"",
+      "echo 'Downloading xcode'",
+      "curl -o /tmp/${var.install_bits}/${var.xcode} http://${build.PackerHTTPIP}:${build.PackerHTTPPort}/${var.xcode}",
+      "echo 'Downloading xcode_cli'",
+      "curl -o /tmp/${var.install_bits}/${var.xcode_cli} http://${build.PackerHTTPIP}:${build.PackerHTTPPort}/${var.xcode_cli}",
+    ]
+  }
+
+  provisioner "shell" {
     expect_disconnect   = true
     start_retry_timeout = "2h"
     environment_vars = [
       "SEEDING_PROGRAM=${var.seeding_program}",
-      "XCODE_PATH=/Volumes/${var.install_bits}/${var.xcode}",
-      "XCODE_CLI_PATH=/Volumes/${var.install_bits}/${var.xcode_cli}"
+      "XCODE_PATH=/tmp/${var.install_bits}/${var.xcode}",
+      "XCODE_CLI_PATH=/tmp/${var.install_bits}/${var.xcode_cli}"
     ]
     scripts = [
       "scripts/xcode_cli.sh",
       "scripts/xcode.sh"
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+    "rm -rf /tmp/${var.install_bits}",
     ]
   }
 
