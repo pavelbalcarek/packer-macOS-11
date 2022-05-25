@@ -186,19 +186,18 @@ source "virtualbox-iso" "macOS" {
     ["modifyvm", "{{ .Name }}", "--keyboard", "usb"],
     ["modifyvm", "{{ .Name }}", "--mouse", "usbtablet"],
     ["modifyvm", "{{ .Name }}", "--vrde", "${var.vrdp_status}"],
-    ["modifyvm", "{{ .Name }}", "--rtcuseutc", "on"],
+    ["modifyvm", "{{ .Name }}", "--rtcuseutc", "off"],
     ["modifyvm", "{{ .Name }}", "--accelerate3d", "on"],
     ["storagectl", "{{ .Name }}", "--name", "IDE Controller", "--remove"],
-    ["storagectl", "{{ .Name }}",  "--name", "SATA Controller", "--hostiocache", "on"],
-    ["modifyvm", "{{ .Name }}", "--cpuidset", "00000001", "000106e5", "00100800", "0098e3fd", "bfebfbff"],
+    ["storagectl", "{{ .Name }}",  "--name", "SATA Controller", "--hostiocache", "off"],
     ["modifyvm", "{{ .Name }}", "--nictype1", "82545EM"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiSystemProduct", "${var.hw_model}"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiSystemVersion", "1.0"],
-    ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiBoardProduct", "${var.board_id}"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/efi/0/Config/DmiBoardSerial", "${var.serial_number}"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/smc/0/Config/DeviceKey", "ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"],
     ["setextradata", "{{ .Name }}", "VBoxInternal/Devices/smc/0/Config/GetKeyFromRealSMC", "1"],
-    ["setextradata", "{{ .Name }}", "VBoxInternal2/EfiGraphicsResolution", "1920x1080"]
+    ["setextradata", "{{ .Name }}", "VBoxInternal2/EfiGraphicsResolution", "1280x720"],
+    ["setextradata", "{{ .Name }}", "VBoxInternal/TM/TSCMode", "RealTSCOffset"]
   ]
   boot_wait              = var.boot_wait_iso
   boot_keygroup_interval = var.boot_keygroup_interval_iso
