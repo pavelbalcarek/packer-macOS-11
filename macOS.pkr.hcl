@@ -172,9 +172,8 @@ source "virtualbox-iso" "macOS" {
   memory               = var.ram_gb * 1024
   disk_size            = var.disk_size_gb * 1024
   vboxmanage           = [
-    ["modifyvm", "{{ .Name }}", "--vram", "128"],
+    ["modifyvm", "{{ .Name }}", "--vram", "16"],
     ["modifyvm", "{{ .Name }}", "--graphicscontroller", "vboxvga"],
-    ["modifyvm", "{{ .Name }}", "--accelerate3d", "off"],
     ["modifyvm", "{{ .Name }}", "--nestedpaging", "on"],
     ["modifyvm", "{{ .Name }}", "--apic", "on"],
     ["modifyvm", "{{ .Name }}", "--pae", "on"],
