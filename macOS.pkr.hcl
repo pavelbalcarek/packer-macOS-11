@@ -213,7 +213,7 @@ source "virtualbox-iso" "macOS" {
     "w<down><down>",
     "<enter>",
     "diskutil mount /dev/disk1s2<enter>",
-    "cp /Volumes/cidata/bootstrap.sh /Volumes/cidata/packer.pkg /Volumes/cidata/setupsshlogin.pkg /var/root/<enter>",
+    "cp /Volumes/cidata/* /var/root/<enter>",
     "diskutil unmount /dev/disk1s2<enter>",
     "chmod +x /var/root/bootstrap.sh<enter>",
     "/var/root/bootstrap.sh<enter>"
